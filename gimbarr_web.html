@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gimbarr Progress</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 20px;
+    }
+
+    h1 { color: #00ffd5; }
+    h2 { margin-top: 30px; color: #ffd500; }
+
+    .elemento {
+      margin: 8px 0;
+      padding: 10px;
+      background: #1c1c1c;
+      border-radius: 8px;
+    }
+
+    .desc {
+      font-size: 0.9em;
+      color: #aaa;
+      margin-left: 24px;
+    }
+
+    #progreso {
+      margin-top: 25px;
+      padding: 15px;
+      background: #0f2a24;
+      border-radius: 10px;
+      color: #00ffd5;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #222;
+      color: #ffd500;
+    }
+
+    input, button {
+      padding: 6px;
+      margin-top: 8px;
+      background: #222;
+      color: #eee;
+      border: 1px solid #444;
+      border-radius: 5px;
+    }
+
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h1>Gimbarr Progress</h1>
+
+<!-- FUNDAMENTOS -->
+<h2>Fundamentos</h2>
+
+<div class="elemento">
+  <label><input type="checkbox" class="check"> Escuadra</label>
+  <div class="desc">Control corporal básico y neutral.</div>
+</div>
+
+<div class="elemento">
+  <label><input type="checkbox" class="check"> Ancla</label>
+  <div class="desc">Base universal para estructuras y banderas.</div>
+</div>
+
+<div class="elemento">
+  <label><input type="checkbox" class="check"> Nivelada</label>
+  <div class="desc">Alineación corporal con control y flexibilidad.</div>
+</div>
+
+<!-- ELEMENTOS BÁSICOS -->
+<h2>Elementos básicos (jugada común)</h2>
+
+<div class="elemento"><label><input type="checkbox" class="check"> Flor</label></div>
+<div class="elemento"><label><input type="checkbox" class="check"> Medio yoyo</label></div>
+<div class="elemento"><label><input type="checkbox" class="check"> Acuario</label></div>
+<div class="elemento"><label><input type="checkbox" class="check"> E</label></div>
+<div class="elemento"><label><input type="checkbox" class="check"> Inframundo</label></div>
+
+<!-- PROGRESO -->
+<div id="progreso">
+  Marca elementos para ver tu progreso.
+</div>
+
+<!-- REGISTRO -->
+<h2>Registro de personas</h2>
+
+Nombre:<br>
+<input type="text" id="nombre">
+<br>
+<button onclick="registrar()">Registrar progreso</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Elementos</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody id="tabla"></tbody>
+</table>
+
+<script>
+  const checks = document.querySelectorAll(".check");
+  const progreso = document.getElementById("progreso");
+  const tabla = document.getElementById("tabla");
+
+  function contar() {
+    let n = 0;
+    checks.forEach(c => { if (c.checked) n++; });
+    return n;
+  }
+
+  function estado(n) {
+    if (n === 0) return "Sin base aún";
+    if (n <= 3) return "Construyendo base";
+    if (n <= 6) return "Base sólida";
+    return "Listo para variantes";
+  }
+
+  function actualizarProgreso() {
+    const n = contar();
+    progreso.textContent =
+      "Elementos marcados: " + n + " → " + estado(n);
+  }
+
+  function registrar() {
+    const nombre = document.getElementById("nombre").value.trim();
+    if (nombre === "") return;
+
+    const n = contar();
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${nombre}</td>
+      <td>${n}</td>
+      <td>${estado(n)}</td>
+    `;
+    tabla.appendChild(fila);
+    document.getElementById("nombre").value = "";
+  }
+
+  checks.forEach(c => c.addEventListener("change", actualizarProgreso));
+</script>
+
+</body>
+</html>
